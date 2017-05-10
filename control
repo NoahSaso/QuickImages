@@ -1,0 +1,9 @@
+Package: com.noahsaso.quickimages
+Name: QuickImages
+Depends: mobilesubstrate
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: An awesome MobileSubstrate tweak!
+Maintainer: Noah Saso <noahsaso@gmail.com>
+Author: Noah Saso <noahsaso@gmail.com>
+Section: Tweaks
