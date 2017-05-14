@@ -6,6 +6,8 @@
 
 #import "../Global.h"
 
+static NSString *shortcutForImageSelection = nil;
+
 @interface PSSpecifier (QuickImages)
 - (void)setButtonAction:(SEL)arg1;
 @end
@@ -91,6 +93,12 @@ static NSArray *createSpecifierArrayForShortcutWithController(NSString *shortcut
 - (void)setShortcutImage:(PSSpecifier *)specifier {
 	NSString *shortcut = [self specifierAtIndex:([self indexOfSpecifier:specifier] - 2)].name;
 	HBLogDebug(@"Changing image for %@...", shortcut);
+	UIImagePickerController *pickerController = [UIImagePickerController new];
+	pickerController.delegate = self;
+	pickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+	pickerController.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType: pickerController.sourceType];
+	shortcutForImageSelection = shortcut;
+	[self presentViewController:pickerController animated:YES completion:nil];
 }
 
 - (void)removeShortcut:(PSSpecifier *)specifier {
@@ -104,6 +112,17 @@ static NSArray *createSpecifierArrayForShortcutWithController(NSString *shortcut
 	[self removeSpecifierAtIndex:(self.specifiers.count - 1) animated:YES];
 	[self removeSpecifierAtIndex:(self.specifiers.count - 1) animated:YES];
 	[self removeSpecifierAtIndex:(self.specifiers.count - 1) animated:YES];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+	HBLogDebug(@"Saving image for %@...", shortcutForImageSelection);
+	if(shortcutForImageSelection != nil) {
+		UIImage *image = (UIImage *) info[UIImagePickerControllerOriginalImage];
+		[UIImageJPEGRepresentation(image, 1.f) writeToFile:PATH_FOR_SHORTCUT(shortcutForImageSelection) atomically:YES];
+		[picker dismissViewControllerAnimated:YES completion:nil];
+		HBLogDebug(@"Saved image for %@", shortcutForImageSelection);
+	}
+	shortcutForImageSelection = nil;
 }
 
 @end

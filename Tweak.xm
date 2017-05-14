@@ -1,7 +1,7 @@
 #import "Global.h"
 
 static BOOL isEnabled = YES;
-static NSArray *shortcuts = @[];
+static NSArray *shortcuts = nil;
 
 @interface CKMessageEntryRichTextView : UITextView
 - (void)paste:(id)arg1;
@@ -27,9 +27,9 @@ static NSString *getStringInStringFromArray(NSString *masterString, NSArray *arr
 		if(shortcut != nil) {
 			NSString *imagePath = PATH_FOR_SHORTCUT(shortcut);
 			if([[NSFileManager defaultManager] fileExistsAtPath:imagePath]) {
-				textView.text = [textView.text stringByReplacingOccurrencesOfString:shortcut withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, textView.text.length)];
 				UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
 				if(image != nil) {
+					textView.text = [textView.text stringByReplacingOccurrencesOfString:shortcut withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, textView.text.length)];
 					UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
 					NSArray *originalItems = pasteboard.items;
 					[pasteboard setImage:image];

@@ -1,5 +1,5 @@
 #import <Preferences/PSListController.h>
 
-@interface QIRootListController : PSListController
+@interface QIRootListController : PSListController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @end
