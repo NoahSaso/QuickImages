@@ -9,6 +9,7 @@ include $(THEOS)/makefiles/tweak.mk
 
 after-install::
 	install.exec "killall -9 MobileSMS"
+	# install.exec "killall -9 Preferences"
 
 SUBPROJECTS += Preferences
 
